@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Valemón | Valemón Hunt</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230f8b8d'/%3E%3Cpath d='M18 17h9l6 29 6-29h9L38 52H28L18 17z' fill='white'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script defer src="/js/creatures.js"></script>
+    <script defer src="/js/storage.js"></script>
+    <script defer src="/js/creature-page.js"></script>
+  </head>
+  <body data-creature-id="valemon-4">
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <a href="/">Valemón Hunt</a>
+          <span class="progress-label" data-progress-label>0 of 5 captured</span>
+        </div>
+        <a class="button secondary" href="/collection.html">Collection</a>
+      </header>
+      <section class="viewer-panel" aria-label="3D Valemón viewer">
+        <model-viewer id="model-viewer" ar ar-modes="scene-viewer quick-look" camera-controls touch-action="pan-y" shadow-intensity="2" auto-rotate disable-pan environment-image="neutral" skybox-height="2m" max-camera-orbit="auto 90deg auto">
+          <button slot="ar-button" class="ar-button">View Valemón in AR</button>
+          <div id="error" class="hide">AR is not supported on this device</div>
+        </model-viewer>
+      </section>
+      <section class="panel creature-info" aria-labelledby="creature-title">
+        <p class="progress-label" data-creature-index>Valemón 4 of 5</p>
+        <h1 id="creature-title" data-creature-name>Valemón</h1>
+        <p data-creature-description>A mysterious creature discovered in this territory.</p>
+        <div class="progress" aria-hidden="true"><span data-progress-bar></span></div>
+        <div class="status-message" aria-live="polite" data-capture-message></div>
+        <div class="actions">
+          <a class="button" href="/collection.html">View collection</a>
+          <a class="button secondary" href="/completion.html" data-complete-link hidden>View completed collection</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,18 +1,57 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Valemón Hunt</title>
+    <meta
+      name="description"
+      content="Explore the territory, scan QR codes, and capture five Valemones."
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230f8b8d'/%3E%3Cpath d='M18 17h9l6 29 6-29h9L38 52H28L18 17z' fill='white'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script defer src="/js/creatures.js"></script>
+    <script defer src="/js/storage.js"></script>
+    <script defer src="/js/app.js"></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <span>Valemón Hunt</span>
+          <span class="progress-label" data-progress-label>0 of 5 captured</span>
+        </div>
+        <a class="button secondary" href="/collection.html">Collection</a>
+      </header>
 
-</head>
-<body>
-    <h1>Hello, World!</h1>
-    <p>este es el sitio de vale</p>
-<model-viewer src="NeilArmstrong.glb"  shadow-intensity="1" camera-controls touch-action="pan-y"></model-viewer>
+      <section class="hero" aria-labelledby="welcome-title">
+        <div>
+          <h1 id="welcome-title">Valemón Hunt</h1>
+          <p>
+            Explore the territory, find the hidden QR codes, and capture all five
+            Valemones.
+          </p>
+        </div>
 
+        <div>
+          <p class="progress-label" data-progress-label>0 of 5 captured</p>
+          <div class="progress" aria-hidden="true">
+            <span data-progress-bar></span>
+          </div>
+        </div>
 
-</body>
+        <div class="actions">
+          <a class="button" href="/collection.html">View collection</a>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="privacy-title">
+        <h2 id="privacy-title">Saved on this device</h2>
+        <p class="privacy">
+          Your collection is saved on this device and browser. Clearing browser
+          data will reset your progress.
+        </p>
+      </section>
+    </main>
+  </body>
 </html>
