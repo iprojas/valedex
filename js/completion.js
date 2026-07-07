@@ -59,7 +59,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     if (!window.ValemonStorage.isCollectionComplete()) {
-      window.location.replace("/collection.html");
+      window.location.replace("/");
       return;
     }
 

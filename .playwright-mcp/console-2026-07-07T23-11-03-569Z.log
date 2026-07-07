@@ -1,0 +1,19 @@
+[     287ms] [LOG] [$updateSource] called! 
+src: null
+extraUrls: 
+loaded: false @ https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js:1035
+[     287ms] [LOG] [$updateSource] BAILING OUT EARLY! @ https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js:1035
+[     305ms] [LOG] [$updateSource] called! 
+src: /assets/models/model2.glb
+extraUrls: 
+loaded: false @ https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js:1035
+[     305ms] [LOG] [$updateSource] BAILING OUT EARLY! @ https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js:1035
+[     312ms] [LOG] IntersectionObserver fired! isIntersecting: true @ https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js:1035
+[     313ms] [LOG] [$updateSource] called! 
+src: /assets/models/model2.glb
+extraUrls: 
+loaded: false @ https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js:1035
+[    8591ms] [WARNING] [.WebGL-0x13bc000f3e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels @ http://localhost:4173/viewer.html?id=valemon-2:0
+[    8937ms] [WARNING] [.WebGL-0x13bc000f3e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels @ http://localhost:4173/viewer.html?id=valemon-2:0
+[    9162ms] [WARNING] [.WebGL-0x13bc000f3e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels @ http://localhost:4173/viewer.html?id=valemon-2:0
+[    9336ms] [WARNING] [.WebGL-0x13bc000f3e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat) @ http://localhost:4173/viewer.html?id=valemon-2:0

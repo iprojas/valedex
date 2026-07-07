@@ -1,0 +1,38 @@
+- main [ref=f2e2]:
+  - region "You've discovered a new Valemón!" [ref=f2e3]:
+    - generic [ref=f2e4]: "!"
+    - paragraph [ref=f2e5]: New discovery
+    - heading "You've discovered a new Valemón!" [level=1] [ref=f2e6]
+    - generic [ref=f2e7]:
+      - strong [ref=f2e8]: Rocamon
+      - generic [ref=f2e9]: Uncommon
+    - paragraph [ref=f2e10]: 1 of 5 discovered
+    - paragraph [ref=f2e13]: A resilient Valemón discovered near stone, shade, and quiet paths.
+    - paragraph [ref=f2e14]: Rocamon keeps old routes in memory and rewards participants who look closely.
+    - generic [ref=f2e15]:
+      - generic [ref=f2e16]:
+        - term [ref=f2e17]: Rarity
+        - definition [ref=f2e18]: Uncommon
+      - generic [ref=f2e19]:
+        - term [ref=f2e20]: Progress
+        - definition [ref=f2e21]: 1 of 5 discovered
+      - generic [ref=f2e22]:
+        - term [ref=f2e23]: Discovered
+        - definition [ref=f2e24]: Unlocked
+      - generic [ref=f2e25]:
+        - term [ref=f2e26]: Collection no.
+        - definition [ref=f2e27]: "002"
+      - generic [ref=f2e28]:
+        - term [ref=f2e29]: Element
+        - definition [ref=f2e30]: Stone
+      - generic [ref=f2e31]:
+        - term [ref=f2e32]: Habitat
+        - definition [ref=f2e33]: Rock garden
+      - generic [ref=f2e34]:
+        - term [ref=f2e35]: Visits
+        - definition [ref=f2e36]: "1"
+    - generic [ref=f2e37]:
+      - link "View Valemón" [ref=f2e38] [cursor=pointer]:
+        - /url: /viewer.html?id=valemon-2
+      - link "Back to Collection" [ref=f2e39] [cursor=pointer]:
+        - /url: /

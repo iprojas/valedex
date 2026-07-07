@@ -8,102 +8,35 @@
     }
   }
 
-  function updateProgress(result) {
-    setText("[data-progress-label]", `${result.capturedCount} of ${result.totalCount} captured`);
-    const bar = document.querySelector("[data-progress-bar]");
-    if (bar) {
-      bar.style.setProperty(
-        "--progress",
-        `${(result.capturedCount / result.totalCount) * 100}%`,
-      );
-    }
+  function progressText(count, total) {
+    return `${count} of ${total} discovered`;
   }
 
-  function getMessage(result) {
-    if (result.error) {
-      return {
-        title: "Unknown Valemón",
-        body: "This QR destination does not match the current hunt.",
-        complete: false,
-      };
-    }
-
-    if (result.isComplete && result.isNewCapture) {
-      return {
-        title: "Collection complete!",
-        body: "You captured all five Valemones. Open your collection to claim your reward.",
-        complete: true,
-      };
-    }
-
-    if (result.isFirstCapture) {
-      return {
-        title: "Welcome to the Valemón Hunt!",
-        body: "You captured your first Valemón. Explore the territory, find the remaining QR codes, and capture them all.",
-        complete: false,
-      };
-    }
-
-    if (result.isNewCapture) {
-      return {
-        title: "New Valemón captured!",
-        body: `You have captured ${result.capturedCount} of ${result.totalCount} Valemones.`,
-        complete: false,
-      };
-    }
-
-    return {
-      title: "You already captured this Valemón.",
-      body: "Keep exploring to find the remaining creatures.",
-      complete: false,
-    };
-  }
-
-  function renderMessage(result) {
-    const message = getMessage(result);
-    const messageElement = document.querySelector("[data-capture-message]");
-    const completedLink = document.querySelector("[data-complete-link]");
-
-    if (messageElement) {
-      messageElement.innerHTML = `<strong>${message.title}</strong><span>${message.body}</span>`;
-    }
-
-    if (completedLink) {
-      completedLink.hidden = !message.complete;
-    }
-  }
-
-  function wireModelViewer(creature) {
-    const modelViewer = document.querySelector("#model-viewer");
-    const errorMessage = document.querySelector("#error");
-
-    if (!modelViewer || !creature) {
+  function renderMetadata(creature, result, state) {
+    const list = document.querySelector("[data-metadata]");
+    if (!list || !creature) {
       return;
     }
 
-    modelViewer.setAttribute("src", creature.model);
-    modelViewer.setAttribute("alt", `A 3D model of ${creature.name}`);
+    const captured = state.captured[creature.id];
+    const items = [
+      ["Rarity", creature.rarity],
+      ["Progress", progressText(result.capturedCount, result.totalCount)],
+      ["Discovered", captured ? "Unlocked" : "Locked"],
+      ["Collection no.", creature.collectibleNo],
+      ["Element", creature.element],
+      ["Habitat", creature.habitat],
+      ["Visits", String(captured ? captured.visits : 0)],
+    ];
 
-    modelViewer.addEventListener("ar-status", (event) => {
-      if (event.detail.status === "failed" && errorMessage) {
-        errorMessage.classList.remove("hide");
-
-        errorMessage.addEventListener(
-          "transitionend",
-          () => {
-            errorMessage.classList.add("hide");
-          },
-          { once: true },
-        );
-      }
-    });
-
-    modelViewer.addEventListener("error", () => {
-      if (errorMessage) {
-        errorMessage.textContent = "The 3D model could not be loaded.";
-        errorMessage.classList.remove("hide");
-      }
-    });
+    list.replaceChildren(
+      ...items.map(([label, value]) => {
+        const row = document.createElement("div");
+        row.className = "metadata-row";
+        row.innerHTML = `<dt>${label}</dt><dd>${value}</dd>`;
+        return row;
+      }),
+    );
   }
 
   function init() {
@@ -113,16 +46,47 @@
     const creature = window.ValemonCreatures.getCreatureById(pageCreatureId);
     const result = window.ValemonStorage.captureCreature(pageCreatureId);
 
-    updateProgress(result);
-    renderMessage(result);
-
-    if (creature) {
-      document.title = `${creature.name} | Valemón Hunt`;
-      setText("[data-creature-name]", creature.name);
-      setText("[data-creature-description]", creature.description);
-      setText("[data-creature-index]", `Valemón ${creature.index} of ${window.ValemonCreatures.totalCount}`);
-      wireModelViewer(creature);
+    if (!creature || result.error) {
+      document.body.classList.add("discovery-page");
+      setText("[data-discovery-title]", "Unknown Valemón");
+      setText("[data-discovery-copy]", "This QR destination does not match the current hunt.");
+      return;
     }
+
+    if (!result.isNewCapture) {
+      window.location.replace(`/viewer.html?id=${creature.id}`);
+      return;
+    }
+
+    const state = window.ValemonStorage.getGameState();
+    document.body.classList.add("discovery-page");
+    document.title = `${creature.name} discovered | Valemón Hunt`;
+    setText("[data-discovery-title]", "You've discovered a new Valemón!");
+    setText("[data-creature-name]", creature.name);
+    setText("[data-rarity]", creature.rarity);
+    setText("[data-progress-label]", progressText(result.capturedCount, result.totalCount));
+    setText("[data-discovery-copy]", creature.description);
+    setText("[data-lore]", creature.lore);
+
+    const viewerLink = document.querySelector("[data-viewer-link]");
+    if (viewerLink) {
+      viewerLink.href = `/viewer.html?id=${creature.id}`;
+    }
+
+    const completeNote = document.querySelector("[data-complete-note]");
+    if (completeNote) {
+      completeNote.hidden = !result.isComplete;
+    }
+
+    const bar = document.querySelector("[data-progress-bar]");
+    if (bar) {
+      bar.style.setProperty(
+        "--progress",
+        `${(result.capturedCount / result.totalCount) * 100}%`,
+      );
+    }
+
+    renderMetadata(creature, result, state);
   }
 
   document.addEventListener("DOMContentLoaded", init);

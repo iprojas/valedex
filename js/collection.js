@@ -1,29 +1,14 @@
 (function () {
   "use strict";
 
-  function formatDate(value) {
-    if (!value) {
-      return "";
-    }
-
-    try {
-      return new Intl.DateTimeFormat(undefined, {
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(new Date(value));
-    } catch (error) {
-      return value;
-    }
-  }
-
-  function renderProgress(state) {
+  function renderProgress() {
     const count = window.ValemonStorage.getCapturedCount();
     const total = window.ValemonCreatures.totalCount;
     const bar = document.querySelector("[data-progress-bar]");
     const completionLink = document.querySelector("[data-completion-link]");
 
     document.querySelectorAll("[data-progress-label]").forEach((label) => {
-      label.textContent = `${count} of ${total} Valemones captured`;
+      label.textContent = `${count} / ${total} collected`;
     });
 
     if (bar) {
@@ -35,53 +20,52 @@
     }
   }
 
-  function createCard(creature, state) {
+  function createCollectionRow(creature, state) {
     const captured = state.captured[creature.id];
-    const article = document.createElement("article");
-    article.className = `collection-card${captured ? " captured" : ""}`;
-
-    const mark = document.createElement("div");
-    mark.className = "slot-mark";
-    mark.setAttribute("aria-hidden", "true");
-    mark.textContent = captured ? creature.index : "?";
-
-    const copy = document.createElement("div");
-    copy.className = "card-copy";
-
-    const title = document.createElement("h2");
-    title.textContent = captured ? creature.name : `Valemón ${creature.index}`;
-
-    const status = document.createElement("p");
-    status.textContent = captured ? "Captured" : "Not discovered";
-
-    const meta = document.createElement("p");
-    meta.textContent = captured
-      ? `Captured ${formatDate(captured.capturedAt)}`
-      : "Find the QR code to reveal this slot.";
-
-    copy.append(title, status, meta);
+    const tag = captured ? "a" : "article";
+    const row = document.createElement(tag);
+    row.className = `collection-row${captured ? " discovered" : " locked"}`;
 
     if (captured) {
-      const link = document.createElement("a");
-      link.className = "button secondary";
-      link.href = `/creatures/${creature.id}/`;
-      link.textContent = "Review";
-      copy.append(link);
+      row.href = `/viewer.html?id=${creature.id}`;
+      row.setAttribute("aria-label", `Open ${creature.name} viewer`);
     }
 
-    article.append(mark, copy);
-    return article;
+    const icon = document.createElement("div");
+    icon.className = "collection-icon";
+    icon.setAttribute("aria-hidden", "true");
+    icon.textContent = captured ? "✓" : "?";
+
+    const copy = document.createElement("div");
+    copy.className = "collection-copy";
+
+    const name = document.createElement("h2");
+    name.textContent = captured ? creature.name : `Valemón ${creature.index}`;
+
+    const meta = document.createElement("p");
+    meta.textContent = captured ? `${creature.rarity} · Discovered` : "Locked";
+
+    copy.append(name, meta);
+
+    const stateLabel = document.createElement("span");
+    stateLabel.className = "collection-state";
+    stateLabel.textContent = captured ? "View" : "Hidden";
+
+    row.append(icon, copy, stateLabel);
+    return row;
   }
 
   function renderCollection() {
     const state = window.ValemonStorage.getGameState();
-    const grid = document.querySelector("[data-collection-grid]");
+    const list = document.querySelector("[data-collection-grid]");
 
-    renderProgress(state);
+    renderProgress();
 
-    if (grid) {
-      grid.replaceChildren(
-        ...window.ValemonCreatures.creatures.map((creature) => createCard(creature, state)),
+    if (list) {
+      list.replaceChildren(
+        ...window.ValemonCreatures.creatures.map((creature) =>
+          createCollectionRow(creature, state),
+        ),
       );
     }
   }
