@@ -8,7 +8,7 @@
     const completionLink = document.querySelector("[data-completion-link]");
 
     document.querySelectorAll("[data-progress-label]").forEach((label) => {
-      label.textContent = `${count} / ${total} collected`;
+      label.textContent = `${count} / ${total} encontrados`;
     });
 
     if (bar) {
@@ -24,34 +24,38 @@
     const captured = state.captured[creature.id];
     const tag = captured ? "a" : "article";
     const row = document.createElement(tag);
-    row.className = `collection-row${captured ? " discovered" : " locked"}`;
+    row.className = `collection-row nes-container is-rounded${
+      captured ? " discovered" : " unknown"
+    }`;
 
     if (captured) {
       row.href = `/viewer.html?id=${creature.id}`;
-      row.setAttribute("aria-label", `Open ${creature.name} viewer`);
+      row.setAttribute("aria-label", `Abrir visor de ${creature.name}`);
     }
 
-    const icon = document.createElement("div");
-    icon.className = "collection-icon";
-    icon.setAttribute("aria-hidden", "true");
-    icon.textContent = captured ? "✓" : "?";
+    const portrait = document.createElement("div");
+    portrait.className = "collection-portrait";
 
-    const copy = document.createElement("div");
-    copy.className = "collection-copy";
+    if (captured && creature.photo) {
+      const image = document.createElement("img");
+      image.src = creature.photo;
+      image.alt = creature.name;
+      image.loading = "lazy";
+      image.addEventListener("error", () => {
+        portrait.classList.add("missing-photo");
+        portrait.textContent = "?";
+        image.remove();
+      });
+      portrait.append(image);
+    } else {
+      portrait.setAttribute("aria-hidden", "true");
+      portrait.textContent = "?";
+    }
 
     const name = document.createElement("h2");
-    name.textContent = captured ? creature.name : `Valemón ${creature.index}`;
+    name.textContent = captured ? creature.name : "Desconocido";
 
-    const meta = document.createElement("p");
-    meta.textContent = captured ? `${creature.rarity} · Discovered` : "Locked";
-
-    copy.append(name, meta);
-
-    const stateLabel = document.createElement("span");
-    stateLabel.className = "collection-state";
-    stateLabel.textContent = captured ? "View" : "Hidden";
-
-    row.append(icon, copy, stateLabel);
+    row.append(portrait, name);
     return row;
   }
 
@@ -70,26 +74,7 @@
     }
   }
 
-  function wireReset() {
-    const button = document.querySelector("[data-reset]");
-    if (!button) {
-      return;
-    }
-
-    button.addEventListener("click", () => {
-      const confirmed = window.confirm(
-        "Are you sure you want to erase your captured Valemones and restart the hunt?",
-      );
-
-      if (confirmed) {
-        window.ValemonStorage.resetGame();
-        renderCollection();
-      }
-    });
-  }
-
   document.addEventListener("DOMContentLoaded", () => {
     renderCollection();
-    wireReset();
   });
 })();

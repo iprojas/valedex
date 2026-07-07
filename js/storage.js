@@ -154,12 +154,6 @@
     };
   }
 
-  function resetGame() {
-    memoryState = createDefaultState();
-    removeStoredValue();
-    return cloneState(memoryState);
-  }
-
   window.ValemonStorage = {
     STORAGE_KEY,
     getGameState,
@@ -169,6 +163,5 @@
     getCapturedCreatureIds,
     getCapturedCount,
     isCollectionComplete,
-    resetGame,
   };
 })();

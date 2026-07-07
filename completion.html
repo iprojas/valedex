@@ -1,12 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Completed | Valemón Hunt</title>
-    <meta name="description" content="Valemón Hunt completion reward screen." />
+    <title>Valedex completa</title>
+    <meta name="description" content="Pantalla de premio por completar la Valedex." />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230f8b8d'/%3E%3Cpath d='M18 17h9l6 29 6-29h9L38 52H28L18 17z' fill='white'/%3E%3C/svg%3E" />
+    <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/styles.css" />
+    <script defer src="/data/valemons.js"></script>
     <script defer src="/js/creatures.js"></script>
     <script defer src="/js/storage.js"></script>
     <script defer src="/js/completion.js"></script>
@@ -15,32 +17,26 @@
     <main class="shell">
       <header class="topbar">
         <div class="brand">
-          <a href="/">Valemón Hunt</a>
-          <span class="progress-label">5 of 5 Valemones captured</span>
+          <span class="progress-label">5 de 5 Valemones encontrados</span>
         </div>
-        <a class="button secondary" href="/">Collection</a>
+        <a class="button nes-btn" href="/">Colección</a>
       </header>
 
       <section class="hero completion-banner" aria-labelledby="completion-title">
-   <div class="celebration" aria-hidden="true"></div>
+        <div class="celebration" aria-hidden="true"></div>
         <div>
-          <h1 id="completion-title">You captured every Valemón!</h1>
+          <h1 id="completion-title">Valedex completa</h1>
           <p>
-            You explored the entire territory and completed the collection. Show
-            this screen to receive your reward.
+            Encontraste todos los Valemones. Muestra esta pantalla para recibir
+            tu premio.
           </p>
         </div>
-        <p class="progress-label" data-completed-at>Completed today</p>
-        <div class="reward-code" aria-label="Reward code">VALEMON-COMPLETE</div>
+        <p class="progress-label" data-completed-at>Completado hoy</p>
+        <div class="reward-code nes-container is-rounded" aria-label="Código de premio">VALEMON-COMPLETE</div>
       </section>
 
-      <section class="panel" aria-label="Completed collection">
+      <section class="panel" aria-label="Colección completa">
         <div class="grid" data-collection-grid></div>
-      </section>
-
-      <section class="panel" aria-labelledby="restart-title">
-        <h2 id="restart-title">Restart</h2>
-        <button class="danger" type="button" data-reset>Reset collection</button>
       </section>
     </main>
   </body>

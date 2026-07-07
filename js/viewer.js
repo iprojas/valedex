@@ -18,7 +18,7 @@
       return;
     }
 
-    document.title = `${creature.name} viewer | Valemón Hunt`;
+    document.title = `${creature.name} | Valedex`;
 
     const modelViewer = document.querySelector("#model-viewer");
     const title = document.querySelector("[data-viewer-title]");
@@ -29,7 +29,7 @@
     }
 
     if (rarity) {
-      rarity.textContent = creature.rarity;
+      rarity.textContent = creature.rarity || "Valemón";
     }
 
     if (!modelViewer) {
@@ -37,16 +37,16 @@
     }
 
     modelViewer.setAttribute("src", creature.model);
-    modelViewer.setAttribute("alt", `A 3D model of ${creature.name}`);
+    modelViewer.setAttribute("alt", `Modelo 3D de ${creature.name}`);
 
     modelViewer.addEventListener("ar-status", (event) => {
       if (event.detail.status === "failed") {
-        showError("AR is not supported on this device");
+        showError("AR no está disponible en este dispositivo");
       }
     });
 
     modelViewer.addEventListener("error", () => {
-      showError("The 3D model could not be loaded.");
+      showError("No se pudo cargar el modelo 3D.");
     });
   }
 

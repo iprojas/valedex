@@ -3,11 +3,11 @@
 
   function formatDate(value) {
     if (!value) {
-      return "Today";
+      return "hoy";
     }
 
     try {
-      return new Intl.DateTimeFormat(undefined, {
+      return new Intl.DateTimeFormat("es-CL", {
         dateStyle: "full",
         timeStyle: "short",
       }).format(new Date(value));
@@ -24,37 +24,33 @@
 
     const cards = window.ValemonCreatures.creatures.map((creature) => {
       const article = document.createElement("article");
-      article.className = "collection-card captured";
-      article.innerHTML = `
-        <div class="slot-mark" aria-hidden="true">${creature.index}</div>
-        <div class="card-copy">
-          <h2>${creature.name}</h2>
-          <p>Captured</p>
-          <p>${formatDate(state.captured[creature.id].capturedAt)}</p>
-        </div>
-      `;
+      article.className = "collection-card nes-container is-rounded captured";
+
+      const portrait = document.createElement("div");
+      portrait.className = "collection-portrait";
+
+      if (creature.photo) {
+        const image = document.createElement("img");
+        image.src = creature.photo;
+        image.alt = creature.name;
+        image.loading = "lazy";
+        image.addEventListener("error", () => {
+          portrait.classList.add("missing-photo");
+          portrait.textContent = "?";
+          image.remove();
+        });
+        portrait.append(image);
+      } else {
+        portrait.textContent = "?";
+      }
+
+      const name = document.createElement("h2");
+      name.textContent = creature.name;
+      article.append(portrait, name);
       return article;
     });
 
     grid.replaceChildren(...cards);
-  }
-
-  function wireReset() {
-    const button = document.querySelector("[data-reset]");
-    if (!button) {
-      return;
-    }
-
-    button.addEventListener("click", () => {
-      const confirmed = window.confirm(
-        "Are you sure you want to erase your captured Valemones and restart the hunt?",
-      );
-
-      if (confirmed) {
-        window.ValemonStorage.resetGame();
-        window.location.href = "/";
-      }
-    });
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -66,10 +62,9 @@
     const state = window.ValemonStorage.getGameState();
     const completedAt = document.querySelector("[data-completed-at]");
     if (completedAt) {
-      completedAt.textContent = `Completed ${formatDate(state.completedAt)}`;
+      completedAt.textContent = `Completado ${formatDate(state.completedAt)}`;
     }
 
     renderCompleteCollection(state);
-    wireReset();
   });
 })();

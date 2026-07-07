@@ -7,7 +7,7 @@
     const bar = document.querySelector("[data-progress-bar]");
 
     document.querySelectorAll("[data-progress-label]").forEach((label) => {
-      label.textContent = `${count} of ${total} captured`;
+      label.textContent = `${count} de ${total} encontrados`;
     });
 
     if (bar) {

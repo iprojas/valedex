@@ -1,8 +1,8 @@
-# Valemón QR Codes
+# Códigos QR Valemón
 
-Generate final printable QR files after the production domain is known.
+Genera los QR finales para imprimir cuando el dominio de producción esté definido.
 
-Route mapping:
+Mapa de rutas:
 
 - QR 1: `https://example.com/creatures/valemon-1/`
 - QR 2: `https://example.com/creatures/valemon-2/`
@@ -10,4 +10,4 @@ Route mapping:
 - QR 4: `https://example.com/creatures/valemon-4/`
 - QR 5: `https://example.com/creatures/valemon-5/`
 
-Replace `https://example.com` with the deployed site origin before printing.
+Reemplaza `https://example.com` por el origen del sitio desplegado antes de imprimir.

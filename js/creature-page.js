@@ -9,7 +9,43 @@
   }
 
   function progressText(count, total) {
-    return `${count} of ${total} discovered`;
+    return `${count} de ${total} encontrados`;
+  }
+
+  function parseMarkdown(markdown) {
+    const paragraphs = markdown
+      .replace(/^# .+$/gm, "")
+      .split(/\n{2,}/)
+      .map((paragraph) => paragraph.replace(/\s+/g, " ").trim())
+      .filter(Boolean);
+
+    return {
+      description: paragraphs[0] || "",
+      lore: paragraphs.slice(1).join(" "),
+    };
+  }
+
+  async function loadCreatureText(creature) {
+    if (!creature?.text) {
+      return {
+        description: creature?.description || "",
+        lore: creature?.lore || "",
+      };
+    }
+
+    try {
+      const response = await fetch(creature.text);
+      if (response.ok) {
+        return parseMarkdown(await response.text());
+      }
+    } catch (error) {
+      // Las vistas locales por archivo pueden bloquear fetch; el fallback conserva la captura.
+    }
+
+    return {
+      description: creature.description || "",
+      lore: creature.lore || "",
+    };
   }
 
   function renderMetadata(creature, result, state) {
@@ -20,13 +56,10 @@
 
     const captured = state.captured[creature.id];
     const items = [
-      ["Rarity", creature.rarity],
-      ["Progress", progressText(result.capturedCount, result.totalCount)],
-      ["Discovered", captured ? "Unlocked" : "Locked"],
-      ["Collection no.", creature.collectibleNo],
-      ["Element", creature.element],
-      ["Habitat", creature.habitat],
-      ["Visits", String(captured ? captured.visits : 0)],
+      ["Tipo", creature.rarity],
+      ["Progreso", progressText(result.capturedCount, result.totalCount)],
+      ["Número", creature.collectibleNo],
+      ["Visitas", String(captured ? captured.visits : 0)],
     ];
 
     list.replaceChildren(
@@ -39,7 +72,7 @@
     );
   }
 
-  function init() {
+  async function init() {
     const pageCreatureId =
       document.body.dataset.creatureId ||
       window.ValemonCreatures.getCreatureIdFromPath(window.location.pathname);
@@ -48,8 +81,8 @@
 
     if (!creature || result.error) {
       document.body.classList.add("discovery-page");
-      setText("[data-discovery-title]", "Unknown Valemón");
-      setText("[data-discovery-copy]", "This QR destination does not match the current hunt.");
+      setText("[data-discovery-title]", "Valemón desconocido");
+      setText("[data-discovery-copy]", "Este QR no pertenece a la búsqueda actual.");
       return;
     }
 
@@ -59,14 +92,15 @@
     }
 
     const state = window.ValemonStorage.getGameState();
+    const text = await loadCreatureText(creature);
     document.body.classList.add("discovery-page");
-    document.title = `${creature.name} discovered | Valemón Hunt`;
-    setText("[data-discovery-title]", "You've discovered a new Valemón!");
+    document.title = `${creature.name} encontrado | Valedex`;
+    setText("[data-discovery-title]", "Encontraste un nuevo Valemón");
     setText("[data-creature-name]", creature.name);
     setText("[data-rarity]", creature.rarity);
     setText("[data-progress-label]", progressText(result.capturedCount, result.totalCount));
-    setText("[data-discovery-copy]", creature.description);
-    setText("[data-lore]", creature.lore);
+    setText("[data-discovery-copy]", text.description);
+    setText("[data-lore]", text.lore);
 
     const viewerLink = document.querySelector("[data-viewer-link]");
     if (viewerLink) {

@@ -1,0 +1,29 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - paragraph [ref=e4]: Valedex
+    - heading "Mis Valemones" [level=1] [ref=e5]
+    - paragraph [ref=e6]: 5 / 5 encontrados
+  - region "Colección de Valemones" [ref=e9]:
+    - link "Abrir visor de Valero" [ref=e10]:
+      - /url: /viewer.html?id=valemon-1
+      - generic [ref=e11]: "?"
+      - heading "Valero" [level=2] [ref=e12]
+    - link "Abrir visor de Rocamon" [ref=e13]:
+      - /url: /viewer.html?id=valemon-2
+      - generic [ref=e14]: "?"
+      - heading "Rocamon" [level=2] [ref=e15]
+    - link "Abrir visor de Flamix" [ref=e16]:
+      - /url: /viewer.html?id=valemon-3
+      - generic [ref=e17]: "?"
+      - heading "Flamix" [level=2] [ref=e18]
+    - link "Abrir visor de Aquon" [ref=e19]:
+      - /url: /viewer.html?id=valemon-4
+      - generic [ref=e20]: "?"
+      - heading "Aquon" [level=2] [ref=e21]
+    - link "Abrir visor de Terrik" [ref=e22]:
+      - /url: /viewer.html?id=valemon-5
+      - generic [ref=e23]: "?"
+      - heading "Terrik" [level=2] [ref=e24]
+  - region "Acciones de la colección" [ref=e25]:
+    - link "Reclamar premio" [ref=e26]:
+      - /url: /completion.html
