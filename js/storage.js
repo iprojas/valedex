@@ -94,7 +94,8 @@
   }
 
   function isCollectionComplete() {
-    return getCapturedCount() === window.ValemonCreatures.totalCount;
+    const total = window.ValemonCreatures.totalCount;
+    return total > 0 && getCapturedCount() === total;
   }
 
   function captureCreature(creatureId) {

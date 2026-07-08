@@ -9,7 +9,9 @@
     }
   }
 
-  function init() {
+  async function init() {
+    await window.ValemonCreatures.ready;
+
     const creatureId = window.ValemonCreatures.getCreatureIdFromSearch(window.location.search);
     const creature = window.ValemonCreatures.getCreatureById(creatureId);
 
@@ -23,6 +25,7 @@
     const modelViewer = document.querySelector("#model-viewer");
     const title = document.querySelector("[data-viewer-title]");
     const rarity = document.querySelector("[data-viewer-rarity]");
+    const backLink = document.querySelector("[data-viewer-back]");
 
     if (title) {
       title.textContent = creature.name;
@@ -30,6 +33,10 @@
 
     if (rarity) {
       rarity.textContent = creature.rarity || "Valemón";
+    }
+
+    if (backLink) {
+      backLink.href = `/valemon.html?id=${creature.id}`;
     }
 
     if (!modelViewer) {

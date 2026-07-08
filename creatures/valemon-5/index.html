@@ -7,17 +7,22 @@
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230f8b8d'/%3E%3Cpath d='M18 17h9l6 29 6-29h9L38 52H28L18 17z' fill='white'/%3E%3C/svg%3E" />
     <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/styles.css" />
-    <script defer src="/data/valemons.js"></script>
     <script defer src="/js/creatures.js"></script>
     <script defer src="/js/storage.js"></script>
     <script defer src="/js/creature-page.js"></script>
   </head>
   <body data-creature-id="valemon-5">
     <main class="shell discovery-shell">
-      <section class="discovery-card" aria-labelledby="discovery-title">
-        <div class="burst" aria-hidden="true">!</div>
-        <p class="eyebrow">Nuevo hallazgo</p>
-        <h1 id="discovery-title" data-discovery-title>Encontraste un nuevo Valemón</h1>
+      <section class="discovery-card valemon-card" aria-labelledby="discovery-title">
+        <header class="valemon-card-top">
+          <a class="button nes-btn" href="/">Volver</a>
+          <a class="button nes-btn valemon-ar-link" href="/viewer.html" aria-label="Ver en realidad aumentada" data-viewer-link>AR</a>
+        </header>
+        <div class="valemon-photo">
+          <img data-creature-photo alt="" />
+        </div>
+        <p class="eyebrow" data-discovery-eyebrow>Valedex</p>
+        <h1 id="discovery-title" data-discovery-title>Valemón</h1>
         <div class="creature-reveal">
           <strong data-creature-name>Valemón</strong>
           <span data-rarity>Valemón</span>
@@ -28,10 +33,6 @@
         <p class="lore" data-lore></p>
         <dl class="metadata-list" data-metadata></dl>
         <p class="complete-note" data-complete-note hidden>Colección completa. Tu premio está listo.</p>
-        <div class="actions vertical">
-          <a class="button nes-btn is-primary" href="/viewer.html?id=valemon-5" data-viewer-link>Ver Valemón</a>
-          <a class="button nes-btn" href="/">Volver</a>
-        </div>
       </section>
     </main>
   </body>

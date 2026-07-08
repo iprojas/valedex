@@ -12,7 +12,7 @@
     });
 
     if (bar) {
-      bar.style.setProperty("--progress", `${(count / total) * 100}%`);
+      bar.style.setProperty("--progress", `${total ? (count / total) * 100 : 0}%`);
     }
 
     if (completionLink) {
@@ -29,8 +29,8 @@
     }`;
 
     if (captured) {
-      row.href = `/viewer.html?id=${creature.id}`;
-      row.setAttribute("aria-label", `Abrir visor de ${creature.name}`);
+      row.href = `/valemon.html?id=${creature.id}`;
+      row.setAttribute("aria-label", `Abrir ficha de ${creature.name}`);
     }
 
     const portrait = document.createElement("div");
@@ -74,7 +74,8 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", async () => {
+    await window.ValemonCreatures.ready;
     renderCollection();
   });
 })();

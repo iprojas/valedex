@@ -53,7 +53,9 @@
     grid.replaceChildren(...cards);
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", async () => {
+    await window.ValemonCreatures.ready;
+
     if (!window.ValemonStorage.isCollectionComplete()) {
       window.location.replace("/");
       return;

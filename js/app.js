@@ -11,9 +11,12 @@
     });
 
     if (bar) {
-      bar.style.setProperty("--progress", `${(count / total) * 100}%`);
+      bar.style.setProperty("--progress", `${total ? (count / total) * 100 : 0}%`);
     }
   }
 
-  document.addEventListener("DOMContentLoaded", updateProgress);
+  document.addEventListener("DOMContentLoaded", async () => {
+    await window.ValemonCreatures.ready;
+    updateProgress();
+  });
 })();

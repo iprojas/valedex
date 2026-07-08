@@ -12,40 +12,24 @@
     return `${count} de ${total} encontrados`;
   }
 
-  function parseMarkdown(markdown) {
-    const paragraphs = markdown
-      .replace(/^# .+$/gm, "")
+  function textParts(value) {
+    const parts = String(value || "")
       .split(/\n{2,}/)
-      .map((paragraph) => paragraph.replace(/\s+/g, " ").trim())
+      .map((part) => part.replace(/\s+/g, " ").trim())
       .filter(Boolean);
 
     return {
-      description: paragraphs[0] || "",
-      lore: paragraphs.slice(1).join(" "),
+      description: parts[0] || "",
+      lore: parts.slice(1).join(" "),
     };
   }
 
-  async function loadCreatureText(creature) {
-    if (!creature?.text) {
-      return {
-        description: creature?.description || "",
-        lore: creature?.lore || "",
-      };
-    }
-
-    try {
-      const response = await fetch(creature.text);
-      if (response.ok) {
-        return parseMarkdown(await response.text());
-      }
-    } catch (error) {
-      // Las vistas locales por archivo pueden bloquear fetch; el fallback conserva la captura.
-    }
-
-    return {
-      description: creature.description || "",
-      lore: creature.lore || "",
-    };
+  function getPageCreatureId() {
+    return (
+      window.ValemonCreatures.getCreatureIdFromSearch(window.location.search) ||
+      document.body.dataset.creatureId ||
+      window.ValemonCreatures.getCreatureIdFromPath(window.location.pathname)
+    );
   }
 
   function renderMetadata(creature, result, state) {
@@ -72,35 +56,54 @@
     );
   }
 
+  function renderImage(creature) {
+    const image = document.querySelector("[data-creature-photo]");
+    if (!image) {
+      return;
+    }
+
+    image.src = creature.photo;
+    image.alt = creature.name;
+    image.addEventListener(
+      "error",
+      () => {
+        image.closest(".valemon-photo")?.classList.add("missing-photo");
+        image.removeAttribute("src");
+        image.alt = "";
+      },
+      { once: true },
+    );
+  }
+
   async function init() {
-    const pageCreatureId =
-      document.body.dataset.creatureId ||
-      window.ValemonCreatures.getCreatureIdFromPath(window.location.pathname);
+    await window.ValemonCreatures.ready;
+
+    const pageCreatureId = getPageCreatureId();
     const creature = window.ValemonCreatures.getCreatureById(pageCreatureId);
     const result = window.ValemonStorage.captureCreature(pageCreatureId);
 
+    document.body.classList.add("discovery-page");
+
     if (!creature || result.error) {
-      document.body.classList.add("discovery-page");
       setText("[data-discovery-title]", "Valemón desconocido");
+      setText("[data-creature-name]", "Desconocido");
       setText("[data-discovery-copy]", "Este QR no pertenece a la búsqueda actual.");
       return;
     }
 
-    if (!result.isNewCapture) {
-      window.location.replace(`/viewer.html?id=${creature.id}`);
-      return;
-    }
-
     const state = window.ValemonStorage.getGameState();
-    const text = await loadCreatureText(creature);
-    document.body.classList.add("discovery-page");
-    document.title = `${creature.name} encontrado | Valedex`;
-    setText("[data-discovery-title]", "Encontraste un nuevo Valemón");
+    const copy = textParts(creature.text || creature.description);
+    const title = result.isNewCapture ? "Encontraste un nuevo Valemón" : "Ficha Valemón";
+
+    document.title = `${creature.name} | Valedex`;
+    setText("[data-discovery-eyebrow]", result.isNewCapture ? "Nuevo hallazgo" : "Valedex");
+    setText("[data-discovery-title]", title);
     setText("[data-creature-name]", creature.name);
     setText("[data-rarity]", creature.rarity);
     setText("[data-progress-label]", progressText(result.capturedCount, result.totalCount));
-    setText("[data-discovery-copy]", text.description);
-    setText("[data-lore]", text.lore);
+    setText("[data-discovery-copy]", copy.description);
+    setText("[data-lore]", copy.lore);
+    renderImage(creature);
 
     const viewerLink = document.querySelector("[data-viewer-link]");
     if (viewerLink) {
@@ -116,7 +119,7 @@
     if (bar) {
       bar.style.setProperty(
         "--progress",
-        `${(result.capturedCount / result.totalCount) * 100}%`,
+        `${result.totalCount ? (result.capturedCount / result.totalCount) * 100 : 0}%`,
       );
     }
 
