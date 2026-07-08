@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CollectionGrid from "../components/CollectionGrid.astro";
+
+const entries = await getCollection("valemones");
+const valemones = entries
+  .map((entry) => ({
+    name: entry.data.name,
+    slug: entry.data.slug,
+    image: entry.data.image,
+    order: entry.data.order,
+  }))
+  .sort((a, b) => a.order - b.order);
+---
+
+<BaseLayout title="Valedex | Colección" description="Colección minimalista de Valemones encontrados.">
+  <main class="shell collection-shell">
+    <header class="collection-header">
+      <img src="/assets/logo.png" alt="Valedex Logo" transition:name="valedex-logo" />
+      <p class="progress-label" data-progress-label>0 / {valemones.length} encontrados</p>
+      <div class="progress" aria-hidden="true">
+        <span data-progress-bar></span>
+      </div>
+    </header>
+
+    <CollectionGrid valemones={valemones} />
+  </main>
+</BaseLayout>

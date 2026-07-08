@@ -1,0 +1,42 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ModelViewer from "../../components/ModelViewer.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("valemones");
+  return entries.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<BaseLayout
+  title={`${entry.data.name} AR | Valedex`}
+  description={`Experiencia AR de ${entry.data.name}.`}
+  bodyClass="ar-body"
+>
+  <main class="ar-screen" aria-label={`Experiencia AR ${entry.data.name}`} data-ar-page data-slug={entry.data.slug}>
+    <a class="viewer-back nes-btn" href={`/${entry.data.slug}`} aria-label="Volver a la ficha">Ficha</a>
+    <ModelViewer model={entry.data.model} name={entry.data.name} ar />
+  </main>
+
+  <script>
+    import { isCaptured } from "../../scripts/collection-state";
+
+    function guardArPage() {
+      const page = document.querySelector<HTMLElement>("[data-ar-page]");
+      const slug = page?.dataset.slug || "";
+
+      if (slug && !isCaptured(slug)) {
+        window.location.href = "/";
+      }
+    }
+
+    document.addEventListener("astro:page-load", guardArPage);
+    document.addEventListener("DOMContentLoaded", guardArPage);
+  </script>
+</BaseLayout>

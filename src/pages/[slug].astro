@@ -1,0 +1,117 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ModelViewer from "../components/ModelViewer.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("valemones");
+  return entries.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const valemones = await getCollection("valemones");
+const total = valemones.length;
+const allSlugs = valemones.map((valemon) => valemon.data.slug);
+---
+
+<BaseLayout
+  title={`${entry.data.name} | Valedex`}
+  description={`Ficha de ${entry.data.name}.`}
+  bodyClass="valemon-body"
+>
+  <main class="valemon-screen" aria-labelledby="valemon-title">
+    <ModelViewer model={entry.data.model} name={entry.data.name} />
+
+    <section
+      class="valemon-overlay nes-container is-rounded"
+      data-valemon-detail
+      data-slug={entry.data.slug}
+      data-total={total}
+      data-name={entry.data.name}
+      data-slugs={JSON.stringify(allSlugs)}
+    >
+      <header class="valemon-card-top">
+        <a class="button nes-btn" href="/">Volver</a>
+        <a class="button nes-btn valemon-ar-link" href={`/${entry.data.slug}/ar`} aria-label="Ver en realidad aumentada">AR</a>
+      </header>
+
+      <p class="eyebrow" data-discovery-eyebrow>Valedex</p>
+      <h1 id="valemon-title" transition:name={`title-${entry.data.slug}`}>{entry.data.name}</h1>
+      <p class="progress-label" data-progress-label>0 / {total} encontrados</p>
+      <div class="valemon-copy">
+        <Content />
+      </div>
+      <dl class="metadata-list" data-metadata>
+        <div class="metadata-row">
+          <dt>Tipo</dt>
+          <dd>{entry.data.type}</dd>
+        </div>
+        <div class="metadata-row">
+          <dt>Progreso</dt>
+          <dd data-progress-value>0 de {total}</dd>
+        </div>
+        <div class="metadata-row">
+          <dt>Número</dt>
+          <dd>{String(entry.data.order).padStart(3, "0")}</dd>
+        </div>
+        <div class="metadata-row">
+          <dt>Visitas</dt>
+          <dd data-visits-value>1</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script>
+    import { captureValemon, capturedCount, getGameState } from "../scripts/collection-state";
+
+    function initValemonDetail() {
+      const detail = document.querySelector<HTMLElement>("[data-valemon-detail]");
+      const progressLabel = document.querySelector<HTMLElement>("[data-progress-label]");
+      const progressValue = document.querySelector<HTMLElement>("[data-progress-value]");
+      const visitsValue = document.querySelector<HTMLElement>("[data-visits-value]");
+      const eyebrow = document.querySelector<HTMLElement>("[data-discovery-eyebrow]");
+
+      if (!detail) {
+        return;
+      }
+
+      if (detail.dataset.initialized === "true") {
+        return;
+      }
+
+      detail.dataset.initialized = "true";
+
+      const slug = detail.dataset.slug || "";
+      const total = Number(detail.dataset.total || 0);
+      const slugs = JSON.parse(detail.dataset.slugs || "[]");
+      const wasCaptured = Boolean(getGameState().captured[slug]);
+      const state = captureValemon(slug);
+      const capturedTotal = capturedCount(slugs);
+      const visits = state.captured[slug]?.visits || 1;
+
+      if (eyebrow) {
+        eyebrow.textContent = wasCaptured ? "Valedex" : "Nuevo hallazgo";
+      }
+
+      if (progressLabel) {
+        progressLabel.textContent = `${capturedTotal} / ${total} encontrados`;
+      }
+
+      if (progressValue) {
+        progressValue.textContent = `${capturedTotal} de ${total}`;
+      }
+
+      if (visitsValue) {
+        visitsValue.textContent = String(visits);
+      }
+    }
+
+    document.addEventListener("astro:page-load", initValemonDetail);
+    document.addEventListener("DOMContentLoaded", initValemonDetail);
+  </script>
+</BaseLayout>

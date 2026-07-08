@@ -1,0 +1,84 @@
+---
+type ValemonSummary = {
+  name: string;
+  slug: string;
+  image: string;
+};
+
+interface Props {
+  valemones: ValemonSummary[];
+}
+
+const { valemones } = Astro.props;
+---
+
+<section
+  class="collection-list"
+  aria-label="Colección de Valemones"
+  data-collection-grid
+  data-valemones={JSON.stringify(valemones)}
+>
+</section>
+
+<script>
+  import { capturedCount, getGameState } from "../scripts/collection-state";
+
+  function renderCollection() {
+    const grid = document.querySelector<HTMLElement>("[data-collection-grid]");
+    const progressLabel = document.querySelector<HTMLElement>("[data-progress-label]");
+    const progressBar = document.querySelector<HTMLElement>("[data-progress-bar]");
+
+    if (!grid) {
+      return;
+    }
+
+    const valemones = JSON.parse(grid.dataset.valemones || "[]");
+    const state = getGameState();
+    const count = capturedCount(valemones.map((valemon: { slug: string }) => valemon.slug));
+    const total = valemones.length;
+
+    if (progressLabel) {
+      progressLabel.textContent = `${count} / ${total} encontrados`;
+    }
+
+    if (progressBar) {
+      progressBar.style.setProperty("--progress", `${total ? (count / total) * 100 : 0}%`);
+    }
+
+    grid.replaceChildren(
+      ...valemones.map((valemon: { name: string; slug: string; image: string }) => {
+        const captured = Boolean(state.captured[valemon.slug]);
+        const row = document.createElement(captured ? "a" : "article");
+        row.className = `collection-row nes-container is-rounded${captured ? " discovered" : " unknown"}`;
+
+        if (captured) {
+          row.setAttribute("href", `/${valemon.slug}`);
+          row.setAttribute("aria-label", `Abrir ficha de ${valemon.name}`);
+        }
+
+        const portrait = document.createElement("div");
+        portrait.className = "collection-portrait";
+
+        if (captured) {
+          const image = document.createElement("img");
+          image.src = valemon.image;
+          image.alt = valemon.name;
+          image.loading = "lazy";
+          portrait.append(image);
+        } else {
+          portrait.setAttribute("aria-hidden", "true");
+          portrait.textContent = "?";
+        }
+
+        const name = document.createElement("h2");
+        name.textContent = captured ? valemon.name : "Desconocido";
+
+        row.append(portrait, name);
+        return row;
+      }),
+    );
+  }
+
+  document.addEventListener("astro:page-load", renderCollection);
+  document.addEventListener("DOMContentLoaded", renderCollection);
+</script>

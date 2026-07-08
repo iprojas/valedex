@@ -1,0 +1,35 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "nes.css/css/nes.min.css";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description = "Colección Valedex.",
+  bodyClass = "",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230f8b8d'/%3E%3Cpath d='M18 17h9l6 29 6-29h9L38 52H28L18 17z' fill='white'/%3E%3C/svg%3E"
+    />
+    <ClientRouter />
+  </head>
+  <body class={bodyClass}>
+    <slot />
+  </body>
+</html>
