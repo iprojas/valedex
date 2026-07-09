@@ -6,9 +6,10 @@ const valemones = defineCollection({
   schema: z.object({
     name: z.string(),
     slug: z.string(),
+    country: z.string(),
     type: z.string(),
     image: z.string(),
-    model: z.string(),
+    model: z.string().nullable(),
     order: z.number(),
   }),
 });

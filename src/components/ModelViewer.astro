@@ -1,16 +1,22 @@
 ---
 interface Props {
-  model: string;
+  model: string | null;
+  image: string;
   name: string;
   ar?: boolean;
   enableAr?: boolean;
 }
 
-const { model, name, ar = false, enableAr = false } = Astro.props;
+const { model, image, name, ar = false, enableAr = false } = Astro.props;
 ---
 
 {
-  ar ? (
+  !model ? (
+    <figure class="model-fallback" aria-label={`Imagen de ${name}`}>
+      <img src={image} alt={name} />
+      {ar && <figcaption>Modelo AR no disponible</figcaption>}
+    </figure>
+  ) : ar ? (
     <model-viewer
       id="model-viewer"
       src={model}

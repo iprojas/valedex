@@ -25,7 +25,7 @@ const allSlugs = valemones.map((valemon) => valemon.data.slug);
 >
   <main class="valemon-screen" aria-labelledby="valemon-title">
     <section class="valemon-model-region" aria-label={`Modelo 3D de ${entry.data.name}`}>
-      <ModelViewer model={entry.data.model} name={entry.data.name} enableAr />
+      <ModelViewer model={entry.data.model} image={entry.data.image} name={entry.data.name} enableAr />
     </section>
 
     <section
@@ -38,13 +38,17 @@ const allSlugs = valemones.map((valemon) => valemon.data.slug);
     >
       <header class="valemon-card-top">
         <p class="eyebrow" data-discovery-eyebrow>Valedex</p>
-        <button class="icon-button valemon-ar-trigger" type="button" data-ar-trigger aria-label="Ver en realidad aumentada">
-          <svg aria-hidden="true" viewBox="0 0 24 24">
-            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
-            <circle cx="12" cy="12" r="3" />
-            <path d="M18.5 3.5v3M17 5h3" />
-          </svg>
-        </button>
+        {
+          entry.data.model && (
+            <button class="icon-button valemon-ar-trigger" type="button" data-ar-trigger aria-label="Ver en realidad aumentada">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+                <circle cx="12" cy="12" r="3" />
+                <path d="M18.5 3.5v3M17 5h3" />
+              </svg>
+            </button>
+          )
+        }
       </header>
 
       <div class="valemon-heading">
@@ -63,6 +67,10 @@ const allSlugs = valemones.map((valemon) => valemon.data.slug);
         <div class="metadata-row">
           <dt>Tipo</dt>
           <dd>{entry.data.type}</dd>
+        </div>
+        <div class="metadata-row">
+          <dt>País</dt>
+          <dd>{entry.data.country}</dd>
         </div>
         <div class="metadata-row">
           <dt>Número</dt>
