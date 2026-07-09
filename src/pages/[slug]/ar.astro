@@ -20,7 +20,6 @@ const { entry } = Astro.props;
   bodyClass="ar-body"
 >
   <main class="ar-screen" aria-label={`Experiencia AR ${entry.data.name}`} data-ar-page data-slug={entry.data.slug}>
-    <a class="viewer-back nes-btn" href={`/${entry.data.slug}`} aria-label="Volver a la ficha">Ficha</a>
     <ModelViewer model={entry.data.model} name={entry.data.name} ar />
   </main>
 

@@ -167,16 +167,21 @@ img {
     );
 }
 
-.valemon-body,
+.valemon-body {
+  overflow: hidden;
+  background: #101820;
+}
+
 .ar-body {
   overflow: hidden;
   background: #050505;
 }
 
-.valemon-screen,
-.ar-screen {
-  position: fixed;
-  inset: 0;
+.valemon-screen {
+  display: grid;
+  grid-template-rows: minmax(0, 45svh) minmax(0, 55svh);
+  height: 100svh;
+  min-height: 100vh;
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
     linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
@@ -184,26 +189,46 @@ img {
   background-size: 24px 24px;
 }
 
-.valemon-screen #model-viewer,
+.ar-screen {
+  position: fixed;
+  inset: 0;
+  background: #101820;
+}
+
+.valemon-model-region {
+  order: 1;
+  min-height: 0;
+  padding: 18px 18px 10px;
+}
+
+.valemon-model-region #model-viewer,
 .ar-screen #model-viewer {
   display: block;
-  width: 100vw;
-  height: 100svh;
-  min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   background: transparent;
 }
 
-.valemon-overlay {
-  position: fixed;
-  left: max(14px, env(safe-area-inset-left));
-  right: max(14px, env(safe-area-inset-right));
-  bottom: max(14px, env(safe-area-inset-bottom));
-  z-index: 20;
+.ar-screen #model-viewer {
+  width: 100vw;
+  height: 100svh;
+  min-height: 100vh;
+}
+
+.valemon-panel {
+  order: 2;
   display: grid;
-  gap: 10px;
-  max-height: min(54vh, 430px);
+  align-content: start;
+  gap: 22px;
+  min-height: 0;
+  margin: 0 18px 18px;
+  padding: 24px;
   overflow: auto;
-  background: rgba(248, 255, 244, 0.96);
+  border-color: #383838;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.56)),
+    var(--screen);
 }
 
 .valemon-card-top {
@@ -213,39 +238,73 @@ img {
   gap: 10px;
 }
 
-.valemon-card-top .nes-btn {
-  min-height: 38px;
-  padding: 8px 10px;
-  font-size: 0.78rem;
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 3px solid #363636;
+  padding: 0;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
 }
 
-.valemon-ar-link {
-  min-width: 52px;
+.icon-button:hover {
+  background: #eef7ff;
 }
 
-.valemon-overlay h1 {
+.icon-button svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.valemon-heading {
+  display: grid;
+  gap: 10px;
+}
+
+.valemon-panel h1 {
   margin: 0;
   overflow-wrap: anywhere;
-  font-size: clamp(1.8rem, 9vw, 3rem);
-  line-height: 1;
+  font-size: clamp(1.8rem, 7vw, 2.75rem);
+  line-height: 1.05;
 }
 
-.valemon-overlay p {
+.valemon-panel h1 span {
+  color: var(--muted);
+  font-size: 0.68em;
+}
+
+.valemon-panel p {
   margin: 0;
+}
+
+.valemon-copy {
+  display: grid;
+  gap: 16px;
+  border-bottom: 2px solid rgba(21, 21, 21, 0.16);
+  padding-bottom: 22px;
+  font-size: 1.02rem;
 }
 
 .metadata-list {
   display: grid;
-  gap: 8px;
+  gap: 14px;
   margin: 0;
 }
 
 .metadata-row {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  border-bottom: 2px solid #d8d8d8;
-  padding-bottom: 6px;
+  gap: 18px;
+  border-bottom: 1px solid rgba(21, 21, 21, 0.16);
+  padding-bottom: 10px;
 }
 
 .metadata-row dt {
@@ -259,23 +318,14 @@ img {
   font-weight: 900;
 }
 
-.viewer-back,
 .ar-launch {
   position: fixed;
   z-index: 20;
-}
-
-.viewer-back {
-  top: max(14px, env(safe-area-inset-top));
-  left: max(14px, env(safe-area-inset-left));
-}
-
-.ar-launch {
   right: max(16px, env(safe-area-inset-right));
   bottom: max(18px, env(safe-area-inset-bottom));
-  left: max(16px, env(safe-area-inset-left));
-  width: auto;
-  min-height: 54px;
+  width: 54px;
+  height: 54px;
+  min-height: 0;
 }
 
 #error {
@@ -302,12 +352,25 @@ img {
     min-height: 210px;
   }
 
-  .valemon-overlay {
-    top: max(18px, env(safe-area-inset-top));
-    right: max(18px, env(safe-area-inset-right));
-    bottom: auto;
-    left: auto;
-    width: min(380px, calc(100vw - 36px));
-    max-height: calc(100vh - 36px);
+  .valemon-screen {
+    grid-template-columns: minmax(320px, 38vw) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 100svh);
+  }
+
+  .valemon-panel {
+    order: 1;
+    margin: 28px 0 28px 28px;
+    padding: clamp(26px, 4vw, 42px);
+  }
+
+  .valemon-model-region {
+    order: 2;
+    padding: 28px;
+  }
+}
+
+@media (min-width: 1040px) {
+  .valemon-screen {
+    grid-template-columns: minmax(360px, 36vw) minmax(0, 1fr);
   }
 }

@@ -24,10 +24,12 @@ const allSlugs = valemones.map((valemon) => valemon.data.slug);
   bodyClass="valemon-body"
 >
   <main class="valemon-screen" aria-labelledby="valemon-title">
-    <ModelViewer model={entry.data.model} name={entry.data.name} />
+    <section class="valemon-model-region" aria-label={`Modelo 3D de ${entry.data.name}`}>
+      <ModelViewer model={entry.data.model} name={entry.data.name} enableAr />
+    </section>
 
     <section
-      class="valemon-overlay nes-container is-rounded"
+      class="valemon-panel nes-container is-rounded"
       data-valemon-detail
       data-slug={entry.data.slug}
       data-total={total}
@@ -35,32 +37,36 @@ const allSlugs = valemones.map((valemon) => valemon.data.slug);
       data-slugs={JSON.stringify(allSlugs)}
     >
       <header class="valemon-card-top">
-        <a class="button nes-btn" href="/">Volver</a>
-        <a class="button nes-btn valemon-ar-link" href={`/${entry.data.slug}/ar`} aria-label="Ver en realidad aumentada">AR</a>
+        <p class="eyebrow" data-discovery-eyebrow>Valedex</p>
+        <button class="icon-button valemon-ar-trigger" type="button" data-ar-trigger aria-label="Ver en realidad aumentada">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+            <circle cx="12" cy="12" r="3" />
+            <path d="M18.5 3.5v3M17 5h3" />
+          </svg>
+        </button>
       </header>
 
-      <p class="eyebrow" data-discovery-eyebrow>Valedex</p>
-      <h1 id="valemon-title" transition:name={`title-${entry.data.slug}`}>{entry.data.name}</h1>
-      <p class="progress-label" data-progress-label>0 / {total} encontrados</p>
+      <div class="valemon-heading">
+        <h1 id="valemon-title" transition:name={`title-${entry.data.slug}`}>
+          <span>#{entry.data.order}</span>
+          {entry.data.name}
+        </h1>
+        <p class="progress-label" data-progress-label>0 / {total} encontrados</p>
+      </div>
+
       <div class="valemon-copy">
         <Content />
       </div>
+
       <dl class="metadata-list" data-metadata>
         <div class="metadata-row">
           <dt>Tipo</dt>
           <dd>{entry.data.type}</dd>
         </div>
         <div class="metadata-row">
-          <dt>Progreso</dt>
-          <dd data-progress-value>0 de {total}</dd>
-        </div>
-        <div class="metadata-row">
           <dt>Número</dt>
           <dd>{String(entry.data.order).padStart(3, "0")}</dd>
-        </div>
-        <div class="metadata-row">
-          <dt>Visitas</dt>
-          <dd data-visits-value>1</dd>
         </div>
       </dl>
     </section>
@@ -72,9 +78,9 @@ const allSlugs = valemones.map((valemon) => valemon.data.slug);
     function initValemonDetail() {
       const detail = document.querySelector<HTMLElement>("[data-valemon-detail]");
       const progressLabel = document.querySelector<HTMLElement>("[data-progress-label]");
-      const progressValue = document.querySelector<HTMLElement>("[data-progress-value]");
-      const visitsValue = document.querySelector<HTMLElement>("[data-visits-value]");
       const eyebrow = document.querySelector<HTMLElement>("[data-discovery-eyebrow]");
+      const arTrigger = document.querySelector<HTMLButtonElement>("[data-ar-trigger]");
+      const modelViewer = document.querySelector<HTMLElement & { activateAR?: () => Promise<void> | void }>("model-viewer");
 
       if (!detail) {
         return;
@@ -90,9 +96,8 @@ const allSlugs = valemones.map((valemon) => valemon.data.slug);
       const total = Number(detail.dataset.total || 0);
       const slugs = JSON.parse(detail.dataset.slugs || "[]");
       const wasCaptured = Boolean(getGameState().captured[slug]);
-      const state = captureValemon(slug);
+      captureValemon(slug);
       const capturedTotal = capturedCount(slugs);
-      const visits = state.captured[slug]?.visits || 1;
 
       if (eyebrow) {
         eyebrow.textContent = wasCaptured ? "Valedex" : "Nuevo hallazgo";
@@ -102,13 +107,9 @@ const allSlugs = valemones.map((valemon) => valemon.data.slug);
         progressLabel.textContent = `${capturedTotal} / ${total} encontrados`;
       }
 
-      if (progressValue) {
-        progressValue.textContent = `${capturedTotal} de ${total}`;
-      }
-
-      if (visitsValue) {
-        visitsValue.textContent = String(visits);
-      }
+      arTrigger?.addEventListener("click", () => {
+        Promise.resolve(modelViewer?.activateAR?.()).catch(() => {});
+      });
     }
 
     document.addEventListener("astro:page-load", initValemonDetail);

@@ -3,9 +3,10 @@ interface Props {
   model: string;
   name: string;
   ar?: boolean;
+  enableAr?: boolean;
 }
 
-const { model, name, ar = false } = Astro.props;
+const { model, name, ar = false, enableAr = false } = Astro.props;
 ---
 
 {
@@ -21,7 +22,31 @@ const { model, name, ar = false } = Astro.props;
       ar
       ar-modes="scene-viewer quick-look"
     >
-      <button slot="ar-button" class="ar-launch nes-btn is-primary">Ver en AR</button>
+      <button slot="ar-button" class="ar-launch icon-button" aria-label="Ver en realidad aumentada">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+          <circle cx="12" cy="12" r="3" />
+          <path d="M18.5 3.5v3M17 5h3" />
+        </svg>
+      </button>
+      <div id="error" class="hide">AR no está disponible en este dispositivo</div>
+    </model-viewer>
+  ) : enableAr ? (
+    <model-viewer
+      id="model-viewer"
+      src={model}
+      alt={`Modelo 3D de ${name}`}
+      camera-controls
+      touch-action="pan-y"
+      shadow-intensity="2"
+      environment-image="neutral"
+      ar
+      ar-modes="scene-viewer quick-look"
+      auto-rotate
+      disable-pan
+      skybox-height="2m"
+      max-camera-orbit="auto 90deg auto"
+    >
       <div id="error" class="hide">AR no está disponible en este dispositivo</div>
     </model-viewer>
   ) : (
