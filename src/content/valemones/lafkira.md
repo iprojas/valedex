@@ -2,10 +2,11 @@
 name: Lafkira
 slug: lafkira
 country: Chile
-type: Water/Ice
+type: Agua/Hielo
 image: /valemones/lafkira/image.jpg
-model: null
+model: /valemones/lafkira/model.glb
+environment: /environments/lafkira.hdr
 order: 2
 ---
 
-A shy living blue clam with a pearl-like face, wave-shaped shell, floating droplets, and a small glacier growing from its shell.
+Una tímida almeja azul viviente, con rostro perlado, concha en forma de ola, gotas flotantes y un pequeño glaciar creciendo sobre su caparazón.

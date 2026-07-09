@@ -2,10 +2,11 @@
 name: Quindaru
 slug: quindaru
 country: Ecuador
-type: Ground/Flying
+type: Tierra/Volador
 image: /valemones/quindaru/image.jpg
 model: /valemones/quindaru/model.glb
+environment: /environments/quindaru.hdr
 order: 6
 ---
 
-A small Andean hummingbird with iridescent feathers, translucent wings, volcanic stone armor, and flowers growing from its back.
+Un pequeño colibrí andino con plumas iridiscentes, alas translúcidas, armadura de piedra volcánica y flores creciendo sobre su espalda.

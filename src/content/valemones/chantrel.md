@@ -1,11 +1,12 @@
 ---
 name: Chantrel
 slug: chantrel
-country: France
-type: Psychic/Flying
+country: Francia
+type: Psíquico/Volador
 image: /valemones/chantrel/image.jpg
 model: /valemones/chantrel/model.glb
+environment: /environments/chantrel.hdr
 order: 8
 ---
 
-A proud rooster with blue feathers, a white chest, red crest and tail details, elegant wings, and a floating psychic jewel.
+Un gallo orgulloso de plumas azules, pecho blanco, cresta roja, detalles rojos en la cola, alas elegantes y una joya psíquica flotante.

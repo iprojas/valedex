@@ -10,6 +10,7 @@ const valemones = defineCollection({
     type: z.string(),
     image: z.string(),
     model: z.string().nullable(),
+    environment: z.string(),
     order: z.number(),
   }),
 });

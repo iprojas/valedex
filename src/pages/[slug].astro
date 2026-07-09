@@ -25,7 +25,13 @@ const allSlugs = valemones.map((valemon) => valemon.data.slug);
 >
   <main class="valemon-screen" aria-labelledby="valemon-title">
     <section class="valemon-model-region" aria-label={`Modelo 3D de ${entry.data.name}`}>
-      <ModelViewer model={entry.data.model} image={entry.data.image} name={entry.data.name} enableAr />
+      <ModelViewer
+        model={entry.data.model}
+        image={entry.data.image}
+        environment={entry.data.environment}
+        name={entry.data.name}
+        enableAr
+      />
     </section>
 
     <section

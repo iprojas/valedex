@@ -2,19 +2,20 @@
 interface Props {
   model: string | null;
   image: string;
+  environment: string;
   name: string;
   ar?: boolean;
   enableAr?: boolean;
 }
 
-const { model, image, name, ar = false, enableAr = false } = Astro.props;
+const { model, image, environment, name, ar = false, enableAr = false } = Astro.props;
 ---
 
 {
   !model ? (
     <figure class="model-fallback" aria-label={`Imagen de ${name}`}>
       <img src={image} alt={name} />
-      {ar && <figcaption>Modelo AR no disponible</figcaption>}
+      {ar && <figcaption>Modelo de realidad aumentada no disponible</figcaption>}
     </figure>
   ) : ar ? (
     <model-viewer
@@ -24,7 +25,8 @@ const { model, image, name, ar = false, enableAr = false } = Astro.props;
       camera-controls
       touch-action="pan-y"
       shadow-intensity="2"
-      environment-image="neutral"
+      environment-image={environment}
+      skybox-image={environment}
       ar
       ar-modes="scene-viewer quick-look"
     >
@@ -35,7 +37,7 @@ const { model, image, name, ar = false, enableAr = false } = Astro.props;
           <path d="M18.5 3.5v3M17 5h3" />
         </svg>
       </button>
-      <div id="error" class="hide">AR no está disponible en este dispositivo</div>
+      <div id="error" class="hide">La realidad aumentada no está disponible en este dispositivo.</div>
     </model-viewer>
   ) : enableAr ? (
     <model-viewer
@@ -45,7 +47,8 @@ const { model, image, name, ar = false, enableAr = false } = Astro.props;
       camera-controls
       touch-action="pan-y"
       shadow-intensity="2"
-      environment-image="neutral"
+      environment-image={environment}
+      skybox-image={environment}
       ar
       ar-modes="scene-viewer quick-look"
       auto-rotate
@@ -53,7 +56,7 @@ const { model, image, name, ar = false, enableAr = false } = Astro.props;
       skybox-height="2m"
       max-camera-orbit="auto 90deg auto"
     >
-      <div id="error" class="hide">AR no está disponible en este dispositivo</div>
+      <div id="error" class="hide">La realidad aumentada no está disponible en este dispositivo.</div>
     </model-viewer>
   ) : (
     <model-viewer
@@ -63,7 +66,8 @@ const { model, image, name, ar = false, enableAr = false } = Astro.props;
       camera-controls
       touch-action="pan-y"
       shadow-intensity="2"
-      environment-image="neutral"
+      environment-image={environment}
+      skybox-image={environment}
       auto-rotate
       disable-pan
       skybox-height="2m"

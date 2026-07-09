@@ -1,11 +1,12 @@
 ---
 name: Qorili
 slug: qorili
-country: Peru
-type: Fire
+country: Perú
+type: Fuego
 image: /valemones/qorili/image.jpg
-model: null
+model: /valemones/qorili/model.glb
+environment: /environments/qorili.hdr
 order: 1
 ---
 
-A small alpaca-like fire spirit with golden-orange fur, subtle Andean patterns, dark hooves, and a glowing solar crest.
+Un pequeño espíritu de fuego parecido a una alpaca, con pelaje dorado anaranjado, patrones andinos sutiles, pezuñas oscuras y una cresta solar luminosa.

@@ -46,7 +46,7 @@ function saveGameState(state: GameState) {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch {
-    // localStorage may be unavailable in private or restricted contexts.
+    // localStorage puede no estar disponible en contextos privados o restringidos.
   }
 }
 

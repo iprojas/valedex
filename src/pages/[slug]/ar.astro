@@ -15,12 +15,12 @@ const { entry } = Astro.props;
 ---
 
 <BaseLayout
-  title={`${entry.data.name} AR | Valedex`}
-  description={`Experiencia AR de ${entry.data.name}.`}
+  title={`${entry.data.name} RA | Valedex`}
+  description={`Experiencia de realidad aumentada de ${entry.data.name}.`}
   bodyClass="ar-body"
 >
-  <main class="ar-screen" aria-label={`Experiencia AR ${entry.data.name}`} data-ar-page data-slug={entry.data.slug}>
-    <ModelViewer model={entry.data.model} image={entry.data.image} name={entry.data.name} ar />
+  <main class="ar-screen" aria-label={`Experiencia de realidad aumentada de ${entry.data.name}`} data-ar-page data-slug={entry.data.slug}>
+    <ModelViewer model={entry.data.model} image={entry.data.image} environment={entry.data.environment} name={entry.data.name} ar />
   </main>
 
   <script>

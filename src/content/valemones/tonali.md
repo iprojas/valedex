@@ -1,11 +1,12 @@
 ---
 name: Tonali
 slug: tonali
-country: Mexico
-type: Fire/Fairy
+country: México
+type: Fuego/Hada
 image: /valemones/tonali/image.jpg
 model: /valemones/tonali/model.glb
+environment: /environments/tonali.hdr
 order: 5
 ---
 
-A playful alebrije dragon with rabbit-like ears, feathered wings, feline paws, colorful patterns, and flames on its horns and tail.
+Un juguetón dragón alebrije con orejas de conejo, alas emplumadas, patas felinas, patrones coloridos y llamas en los cuernos y la cola.

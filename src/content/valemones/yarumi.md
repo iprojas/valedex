@@ -2,10 +2,11 @@
 name: Yarumí
 slug: yarumi
 country: Colombia
-type: Electric/Grass
+type: Eléctrico/Planta
 image: /valemones/yarumi/image.jpg
 model: /valemones/yarumi/model.glb
+environment: /environments/yarumi.hdr
 order: 7
 ---
 
-A young jaguar with yellow fur, blue markings, red accents, leaf-shaped paws, and glowing electric spots.
+Un joven jaguar de pelaje amarillo, marcas azules, acentos rojos, patas con forma de hoja y manchas eléctricas luminosas.

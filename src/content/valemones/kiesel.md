@@ -1,11 +1,12 @@
 ---
 name: Kiesel
 slug: kiesel
-country: Germany
-type: Rock/Steel
+country: Alemania
+type: Roca/Acero
 image: /valemones/kiesel/image.jpg
-model: null
+model: /valemones/kiesel/model.glb
+environment: /environments/kiesel.hdr
 order: 3
 ---
 
-A compact schnauzer guardian with metallic fur, stone-crystal eyebrows and beard, geometric armor, and brass mechanical details.
+Un guardián schnauzer compacto, con pelaje metálico, cejas y barba de piedra cristalina, armadura geométrica y detalles mecánicos de latón.
